@@ -106,7 +106,7 @@ fn get_game() -> Game {
         println!("Which game do you want to play? Enter corresponding number:");
         println!("1: Judgement");
         println!("2: Badam Sat");
-        println!("3: Mendhi Kot");
+        println!("3: Mendhi Kot (upto 8 players only)");
         io::stdin().read_line(&mut game).expect("Couldn't read the game number");
         match game.trim().parse::<i32>() {
             Ok(num) => {
@@ -252,10 +252,11 @@ fn get_deck(game: &Game, num_decks: u8, num_players: u8) -> Vec<(&'static str, i
         },
         Game::MendhiKot => {
             if (num_decks * deck_size) % num_players != 0 {
-                deck.remove(deck.iter().position(|card| card == &("C", 2)).unwrap());
-                deck.remove(deck.iter().position(|card| card == &("D", 2)).unwrap());
-                deck.remove(deck.iter().position(|card| card == &("H", 2)).unwrap());
-                deck.remove(deck.iter().position(|card| card == &("S", 2)).unwrap());
+                println!("Removing cards");
+                deck.remove(deck.iter().position(|&card| card == ("C", 0)).unwrap());
+                deck.remove(deck.iter().position(|&card| card == ("D", 0)).unwrap());
+                deck.remove(deck.iter().position(|&card| card == ("H", 0)).unwrap());
+                deck.remove(deck.iter().position(|&card| card == ("S", 0)).unwrap());
             }
             for _ in 0..(num_decks - 1) {
                 deck.extend(deck.clone());
