@@ -22,11 +22,14 @@ fn must_be_positive(param: &str) {
     println!("{} must be positive", param);
 }
 
-// Combination of cards for each player and number of player exceeds available cards in given decks. Print and error about it.
+// Combination of cards for each player and number of player exceeds available
+// cards in given decks. Print and error about it.
 fn too_many_cards() {
     println!("You're asking for more cards than available in these decks, try again");
 }
 
+// Get seed value from user and return it as u64. Keep trying until valid input
+// is obtained.
 fn get_seed() -> u64 {
     loop {
         let mut seed = String::new();
@@ -48,6 +51,8 @@ fn get_seed() -> u64 {
     }
 }
 
+// Get number of decks from user and return it as u8. Keep trying until valid
+// input is obtained.
 fn get_num_decks() -> u8 {
     loop {
         let mut num_decks = String::new();
@@ -69,6 +74,8 @@ fn get_num_decks() -> u8 {
     }
 }
 
+// Get number of cards from user (in games where everyone gets equal number of
+// cards) and return it as u8. Keep trying until valid input is obtained.
 fn get_num_cards() -> u8 {
     loop {
         let mut num_cards = String::new();
@@ -90,6 +97,8 @@ fn get_num_cards() -> u8 {
     }
 }
 
+// Get which game is being played from user. Input is an integer that is mapped
+// to the `Game` enum. Keep trying until valid input is obtained.
 fn get_game() -> Game {
     loop {
         let mut game = String::new();
@@ -113,6 +122,8 @@ fn get_game() -> Game {
     }
 }
 
+// Get number of players playing the game from user and return it as u8. Keep
+// trying until valid input is obtained.
 fn get_players() -> u8 {
     loop {
         let mut num_players = String::new();
@@ -134,6 +145,8 @@ fn get_players() -> u8 {
     }
 }
 
+// Calculate or prompt user for number of cards for each player for the given
+// `game`. The number of cards is returned as a `Vec<u8>`.
 fn num_cards_for(game: &Game, num_decks: u8, num_players: u8) -> Vec<u8> {
     match game {
         Game::Judgement => loop {
@@ -165,6 +178,8 @@ fn num_cards_for(game: &Game, num_decks: u8, num_players: u8) -> Vec<u8> {
     }
 }
 
+// Get which turn the user is playing on and return it as u8. Keep trying until
+// valid input is obtained.
 fn get_turn(num_players: u8) -> u8 {
     loop {
         let mut turn = String::new();
@@ -191,6 +206,9 @@ fn get_turn(num_players: u8) -> u8 {
     }
 }
 
+// Create a deck (as many cards as necessary) based on the game and requested
+// number of decks. Return it as `Vec<(&'static str, i32)>` of suits and
+// numerical positions.
 fn get_deck(game: &Game, num_decks: u8) -> Vec<(&'static str, i32)> {
     let suits = ["H", "S", "C", "D"];
     let nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
@@ -219,6 +237,8 @@ fn main() {
     let turn = get_turn(num_players);
     let num_cards = num_cards_for(&game, num_decks, num_players);
     
+    // A hash map for displaying numerical values of cards as proper symbols,
+    // like Jack, Queen and King.
     let mut num_map: HashMap<i32, String> = HashMap::new();
     num_map.entry(0).or_insert(String::from("2"));
     num_map.entry(1).or_insert(String::from("3"));
@@ -246,6 +266,6 @@ fn main() {
     my_cards.sort();
     println!("Suit    Card");
     for &mut card in my_cards {
-        println!("{}       {}", card.0, num_map.get(&card.1).unwrap())
+        println!("{}       {}", card.0, num_map.get(&card.1).unwrap());
     }
 }
