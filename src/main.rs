@@ -9,6 +9,7 @@ use itertools::Itertools;
 enum Game {
     Judgement,
     BadamSat,
+    MendhiKot,
 }
 
 // Utility to print error about having bad characters in user input.
@@ -105,13 +106,18 @@ fn get_game() -> Game {
         println!("Which game do you want to play? Enter corresponding number:");
         println!("1: Judgement");
         println!("2: Badam Sat");
+        println!("3: Mendhi Kot");
         io::stdin().read_line(&mut game).expect("Couldn't read the game number");
         match game.trim().parse::<i32>() {
             Ok(num) => {
                 match num {
                     1 => break Game::Judgement,
                     2 => break Game::BadamSat,
-                    _ => continue,
+                    3 => break Game::MendhiKot,
+                    _ => {
+                        println!("Invalid game code, try again");
+                        continue
+                    },
                 }
             }
             Err(_) => {
@@ -124,7 +130,7 @@ fn get_game() -> Game {
 
 // Get number of players playing the game from user and return it as u8. Keep
 // trying until valid input is obtained.
-fn get_players() -> u8 {
+fn get_players(game: &Game) -> u8 {
     loop {
         let mut num_players = String::new();
         println!("Enter number of players in the game:");
@@ -138,9 +144,21 @@ fn get_players() -> u8 {
         };
         if num_players <= 0 {
             must_be_positive("Number of players");
+            continue
         }
         else {
-            break num_players as u8
+            match game {
+                Game::MendhiKot => {
+                    if num_players % 2 == 0 {
+                        break num_players as u8
+                    }
+                    else {
+                        println!("Must be even number of players for this game");
+                        continue
+                    }
+                }
+                _ => break num_players as u8
+            }
         }
     }
 }
@@ -175,6 +193,11 @@ fn num_cards_for(game: &Game, num_decks: u8, num_players: u8) -> Vec<u8> {
                 num_cards
             }
         },
+        Game::MendhiKot => {
+            let deck_size = 52;
+            let qtn = (num_decks * deck_size).div_euclid(num_players);
+            vec![qtn; num_players as usize]
+        }
     }
 }
 
@@ -209,10 +232,11 @@ fn get_turn(num_players: u8) -> u8 {
 // Create a deck (as many cards as necessary) based on the game and requested
 // number of decks. Return it as `Vec<(&'static str, i32)>` of suits and
 // numerical positions.
-fn get_deck(game: &Game, num_decks: u8) -> Vec<(&'static str, i32)> {
+fn get_deck(game: &Game, num_decks: u8, num_players: u8) -> Vec<(&'static str, i32)> {
     let suits = ["H", "S", "C", "D"];
     let nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     let mut deck: Vec<(&str, i32)> = suits.iter().cartesian_product(nums.iter()).map(|(&s, &n)| (s, n)).collect();
+    let deck_size = 52;
     match game {
         Game::Judgement => {
             for _ in 0..(num_decks - 1) {
@@ -225,7 +249,19 @@ fn get_deck(game: &Game, num_decks: u8) -> Vec<(&'static str, i32)> {
                 deck.extend(deck.clone());
             }
             deck
-        }
+        },
+        Game::MendhiKot => {
+            if (num_decks * deck_size) % num_players != 0 {
+                deck.remove(deck.iter().position(|card| card == &("C", 2)).unwrap());
+                deck.remove(deck.iter().position(|card| card == &("D", 2)).unwrap());
+                deck.remove(deck.iter().position(|card| card == &("H", 2)).unwrap());
+                deck.remove(deck.iter().position(|card| card == &("S", 2)).unwrap());
+            }
+            for _ in 0..(num_decks - 1) {
+                deck.extend(deck.clone());
+            }
+            deck
+        },
     }
 }
 
@@ -233,7 +269,7 @@ fn main() {
     let seed = get_seed();
     let game = get_game();
     let num_decks = get_num_decks();
-    let num_players = get_players();
+    let num_players = get_players(&game);
     let num_cards = num_cards_for(&game, num_decks, num_players);
     let turn = get_turn(num_players);
     
@@ -253,7 +289,7 @@ fn main() {
     num_map.entry(10).or_insert(String::from("Q"));
     num_map.entry(11).or_insert(String::from("K"));
     num_map.entry(12).or_insert(String::from("A"));
-    let mut deck = get_deck(&game, num_decks);
+    let mut deck = get_deck(&game, num_decks, num_players);
     let mut rng = rand_pcg::Pcg64::seed_from_u64(seed);
     deck.shuffle(&mut rng);
     
