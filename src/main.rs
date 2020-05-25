@@ -5,19 +5,24 @@ use rand::seq::SliceRandom;
 use rand_pcg;
 use itertools::Itertools;
 
+// Types of games supported by the crate.
 enum Game {
     Judgement,
     BadamSat,
 }
 
+// Utility to print error about having bad characters in user input.
 fn bad_char_err(param: &str) {
     println!("Bad characters in {}, make sure it is a positive integer", param);
 }
 
+// Utility to print error about some input parameter not being positive.
+// Most parameters are expected to be positive in this crate.
 fn must_be_positive(param: &str) {
     println!("{} must be positive", param);
 }
 
+// Combination of cards for each player and number of player exceeds available cards in given decks. Print and error about it.
 fn too_many_cards() {
     println!("You're asking for more cards than available in these decks, try again");
 }
