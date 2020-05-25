@@ -234,8 +234,8 @@ fn main() {
     let game = get_game();
     let num_decks = get_num_decks();
     let num_players = get_players();
-    let turn = get_turn(num_players);
     let num_cards = num_cards_for(&game, num_decks, num_players);
+    let turn = get_turn(num_players);
     
     // A hash map for displaying numerical values of cards as proper symbols,
     // like Jack, Queen and King.
