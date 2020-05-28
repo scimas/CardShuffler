@@ -6,6 +6,7 @@ mod game;
 mod badam_sat;
 mod judgement;
 mod pach_tin_don;
+mod mendhi_kot;
 
 // Get seed value from user and return it as u64. Keep trying until valid input
 // is obtained.
@@ -33,12 +34,18 @@ fn get_seed() -> u64 {
 // Get which game is being played from user. Input is an integer that is mapped
 // to the `Game` enum. Keep trying until valid input is obtained.
 fn get_game(seed: u64) -> Box<dyn game::Game> {
+    let games = [
+        "Judgement",
+        "Badam Sat",
+        "Pach Tin Don",
+        "Mendhi Kot",
+    ];
     loop {
         let mut game = String::new();
-        println!("Which game do you want to play? Enter corresponding number:");
-        println!("1: Judgement");
-        println!("2: Badam Sat");
-        println!("3: Pach Tin Don");
+        println!("Which game do you want to play? Enter corresponding number");
+        for (i, g) in games.iter().enumerate() {
+            println!("{}: {}", i + 1, g);
+        }
         io::stdin().read_line(&mut game).expect("Couldn't read the game number");
         match game.trim().parse::<i32>() {
             Ok(num) => {
@@ -46,6 +53,7 @@ fn get_game(seed: u64) -> Box<dyn game::Game> {
                     1 => break Box::new(judgement::Judgement::new(seed)),
                     2 => break Box::new(badam_sat::BadamSat::new(utils::get_players(), seed)),
                     3 => break Box::new(pach_tin_don::PachTinDon::new(seed)),
+                    4 => break Box::new(mendhi_kot::MendhiKot::new(seed)),
                     _ => {
                         println!("Invalid game code, try again");
                         continue
