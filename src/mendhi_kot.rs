@@ -70,6 +70,10 @@ impl Game for MendhiKot<'_, rand_pcg::Pcg64> {
     }
 
     fn cards_for_turn(&self, turn: u8) -> Vec<(&str, i32)> {
+        if turn > self.players {
+            println!("Invalid turn, must be less than number of players ({})", self.players);
+            return Vec::<(&str, i32)>::new();
+        }
         let idx1: usize = ((turn - 1) * self.cards_each) as usize;
         let idx2: usize = idx1 + self.cards_each as usize;
         let mut my_cards = self.playing_cards[idx1..idx2].to_vec();
