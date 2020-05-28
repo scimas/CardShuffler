@@ -61,7 +61,7 @@ impl Game for BadamSat<'_, rand_pcg::Pcg64> {
 
     fn cards_for_turn(&self, turn: u8) -> Vec<(&str, i32)> {
         if turn > self.players {
-            println!("Invalid turn, must be less than number of players ({})", self.players);
+            println!("Invalid turn, must not be more number of players ({})", self.players);
             return Vec::<(&str, i32)>::new();
         }
         let mut idx1: usize = 0;
