@@ -78,7 +78,7 @@ fn get_turn() -> u8 {
         let turn: i8 = match turn.trim().parse() {
             Ok(num) => num,
             Err(_) => {
-                if turn == "q\n" {
+                if &turn[0..1] == "q" {
                     break 0
                 }
                 utils::bad_char_err("turn");
