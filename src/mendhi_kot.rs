@@ -45,7 +45,7 @@ impl MendhiKot<'_, rand_pcg::Pcg64> {
             deck.extend(deck.clone());
         }
         self.playing_cards = deck;
-        self.cards_each = cards_each * 2;
+        self.cards_each = cards_each * num_decks;
     }
 
     fn shuffle(&mut self) {
