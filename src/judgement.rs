@@ -16,7 +16,7 @@ impl Judgement<'_, rand_pcg::Pcg64> {
     pub fn new<'a>(seed: u64) -> Judgement<'a, rand_pcg::Pcg64> {
         Judgement {
             playing_cards: Vec::new(),
-            players: get_players(),
+            players: 0,
             cards_each: 0,
             rng: rand_pcg::Pcg64::seed_from_u64(seed),
         }
