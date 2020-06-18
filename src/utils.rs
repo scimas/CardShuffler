@@ -1,3 +1,5 @@
+#![doc(hidden)]
+
 use std::io;
 
 // Utility to print error about having bad characters in user input.

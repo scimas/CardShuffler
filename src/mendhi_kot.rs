@@ -1,3 +1,5 @@
+#![doc(hidden)]
+
 use itertools::Itertools;
 use crate::game::*;
 use crate::utils::*;

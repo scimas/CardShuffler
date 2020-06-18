@@ -1,3 +1,17 @@
+//! # Card Shuffler
+//!
+//! `card_shuffler` allows you to shuffle cards in a deterministically. If you
+//! want to play with friends remotely - but don't have a way to deal cards -
+//! this will help you.
+//!
+//! Currently supports बदाम सात (Badam Sat), Judgement, मेंढी कोट (Mendhi Kot)
+//! and पाच - तीन - दोन (5 - 3 - 2).
+//!
+//! Run `card_shuffler[.exe]` and follow on screen instructions.
+//!
+//! `Seed` is a number used to shuffle the cards. The cards will be shuffled
+//! exactly in the same order whenever you use the same number for the seed.
+
 use std::io;
 use std::collections::HashMap;
 
@@ -10,6 +24,7 @@ mod mendhi_kot;
 
 // Get seed value from user and return it as u64. Keep trying until valid input
 // is obtained.
+#[doc(hidden)]
 fn get_seed() -> u64 {
     loop {
         let mut seed = String::new();
@@ -33,6 +48,7 @@ fn get_seed() -> u64 {
 
 // Get which game is being played from user. Input is an integer that is mapped
 // to the `Game` enum. Keep trying until valid input is obtained.
+#[doc(hidden)]
 fn get_game(seed: u64) -> Box<dyn game::Game> {
     let games = [
         "Judgement",
@@ -70,6 +86,7 @@ fn get_game(seed: u64) -> Box<dyn game::Game> {
 
 // Get which turn the user is playing on and return it as u8. Keep trying until
 // valid input is obtained.
+#[doc(hidden)]
 fn get_turn() -> u8 {
     loop {
         let mut turn = String::new();
@@ -95,6 +112,7 @@ fn get_turn() -> u8 {
     }
 }
 
+#[doc(hidden)]
 fn main() {
     let seed = get_seed();
     let mut game = get_game(seed);
