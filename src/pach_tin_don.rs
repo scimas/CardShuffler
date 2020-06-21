@@ -1,8 +1,8 @@
 #![doc(hidden)]
 
-use itertools::Itertools;
 use crate::game::*;
 use crate::utils::*;
+use itertools::Itertools;
 use rand::seq::SliceRandom;
 use rand::SeedableRng;
 use rand_pcg;
@@ -21,11 +21,14 @@ impl PachTinDon<'_, rand_pcg::Pcg64> {
             rng: rand_pcg::Pcg64::seed_from_u64(seed),
         }
     }
-    
     fn create_playing_cards(&mut self) {
         let suits = ["H", "S", "C", "D"];
         let nums = [6, 7, 8, 9, 10, 11, 12];
-        let mut deck: Vec<(&str, i32)> = suits.iter().cartesian_product(nums.iter()).map(|(&s, &n)| (s, n)).collect();
+        let mut deck: Vec<(&str, i32)> = suits
+            .iter()
+            .cartesian_product(nums.iter())
+            .map(|(&s, &n)| (s, n))
+            .collect();
         deck.push(("H", 5));
         deck.push(("S", 5));
         self.playing_cards = deck;

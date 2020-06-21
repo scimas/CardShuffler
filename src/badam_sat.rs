@@ -1,8 +1,8 @@
 #![doc(hidden)]
 
-use itertools::Itertools;
 use crate::game::*;
 use crate::utils::*;
+use itertools::Itertools;
 use rand::seq::SliceRandom;
 use rand::SeedableRng;
 use rand_pcg;
@@ -27,7 +27,11 @@ impl BadamSat<'_, rand_pcg::Pcg64> {
     fn create_playing_cards(&mut self, num_decks: u8) {
         let suits = ["H", "S", "C", "D"];
         let nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        let mut deck: Vec<(&str, i32)> = suits.iter().cartesian_product(nums.iter()).map(|(&s, &n)| (s, n)).collect();
+        let mut deck: Vec<(&str, i32)> = suits
+            .iter()
+            .cartesian_product(nums.iter())
+            .map(|(&s, &n)| (s, n))
+            .collect();
         for _ in 0..(num_decks - 1) {
             deck.extend(deck.clone());
         }
@@ -39,8 +43,7 @@ impl BadamSat<'_, rand_pcg::Pcg64> {
         let rem: u8 = self.playing_cards.len().rem_euclid(self.players as usize) as u8;
         if rem == 0 {
             self.cards_dist = vec![qtn; self.players as usize]
-        }
-        else {
+        } else {
             let mut num_cards = vec![qtn; self.players as usize];
             for i in 0..rem as usize {
                 num_cards[i] += 1;
@@ -63,7 +66,10 @@ impl Game for BadamSat<'_, rand_pcg::Pcg64> {
 
     fn cards_for_turn(&self, turn: u8) -> Vec<(&str, i32)> {
         if turn > self.players {
-            println!("Invalid turn, must not be more number of players ({})", self.players);
+            println!(
+                "Invalid turn, must not be more number of players ({})",
+                self.players
+            );
             return Vec::<(&str, i32)>::new();
         }
         let mut idx1: usize = 0;

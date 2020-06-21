@@ -1,8 +1,8 @@
 #![doc(hidden)]
 
-use itertools::Itertools;
 use crate::game::*;
 use crate::utils::*;
+use itertools::Itertools;
 use rand::seq::SliceRandom;
 use rand::SeedableRng;
 use rand_pcg;
@@ -27,7 +27,11 @@ impl MendhiKot<'_, rand_pcg::Pcg64> {
     fn create_playing_cards(&mut self, num_decks: u8) {
         let suits = ["H", "S", "C", "D"];
         let nums = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-        let mut deck: Vec<(&str, i32)> = suits.iter().cartesian_product(nums.iter()).map(|(&s, &n)| (s, n)).collect();
+        let mut deck: Vec<(&str, i32)> = suits
+            .iter()
+            .cartesian_product(nums.iter())
+            .map(|(&s, &n)| (s, n))
+            .collect();
         let total_cards = 52;
         let mut cards_each: u8 = total_cards / self.players;
         let mut discard: u8 = 0;
@@ -40,7 +44,11 @@ impl MendhiKot<'_, rand_pcg::Pcg64> {
         }
         for suit in &suits {
             for i in 0..(discard / 4) {
-                deck.remove(deck.iter().position(|(s, n)| (s, n) == (suit, &(i as i32))).unwrap());
+                deck.remove(
+                    deck.iter()
+                        .position(|(s, n)| (s, n) == (suit, &(i as i32)))
+                        .unwrap(),
+                );
             }
         }
         for _ in 0..(num_decks - 1) {
@@ -60,11 +68,10 @@ impl Game for MendhiKot<'_, rand_pcg::Pcg64> {
         self.players = loop {
             let players = get_players();
             if players % 2 == 0 {
-                break players
-            }
-            else {
+                break players;
+            } else {
                 println!("Must have even number of players for Mendhi Kot");
-                continue
+                continue;
             }
         };
         self.create_playing_cards(get_num_decks());
@@ -73,7 +80,10 @@ impl Game for MendhiKot<'_, rand_pcg::Pcg64> {
 
     fn cards_for_turn(&self, turn: u8) -> Vec<(&str, i32)> {
         if turn > self.players {
-            println!("Invalid turn, must not be more number of players ({})", self.players);
+            println!(
+                "Invalid turn, must not be more number of players ({})",
+                self.players
+            );
             return Vec::<(&str, i32)>::new();
         }
         let idx1: usize = ((turn - 1) * self.cards_each) as usize;
