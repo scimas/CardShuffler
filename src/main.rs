@@ -116,19 +116,19 @@ fn main() {
     // A hash map for displaying numerical values of cards as proper symbols,
     // like Jack, Queen and King.
     let mut num_map: HashMap<i32, String> = HashMap::new();
-    num_map.entry(0).or_insert(String::from("2"));
-    num_map.entry(1).or_insert(String::from("3"));
-    num_map.entry(2).or_insert(String::from("4"));
-    num_map.entry(3).or_insert(String::from("5"));
-    num_map.entry(4).or_insert(String::from("6"));
-    num_map.entry(5).or_insert(String::from("7"));
-    num_map.entry(6).or_insert(String::from("8"));
-    num_map.entry(7).or_insert(String::from("9"));
-    num_map.entry(8).or_insert(String::from("10"));
-    num_map.entry(9).or_insert(String::from("J"));
-    num_map.entry(10).or_insert(String::from("Q"));
-    num_map.entry(11).or_insert(String::from("K"));
-    num_map.entry(12).or_insert(String::from("A"));
+    num_map.insert(0, "2".to_owned());
+    num_map.insert(1, "3".to_owned());
+    num_map.insert(2, "4".to_owned());
+    num_map.insert(3, "5".to_owned());
+    num_map.insert(4, "6".to_owned());
+    num_map.insert(5, "7".to_owned());
+    num_map.insert(6, "8".to_owned());
+    num_map.insert(7, "9".to_owned());
+    num_map.insert(8, "10".to_owned());
+    num_map.insert(9, "J".to_owned());
+    num_map.insert(10, "Q".to_owned());
+    num_map.insert(11, "K".to_owned());
+    num_map.insert(12, "A".to_owned());
     game.preprocess();
     loop {
         let turn = get_turn();

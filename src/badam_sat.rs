@@ -5,7 +5,6 @@ use crate::utils::*;
 use itertools::Itertools;
 use rand::seq::SliceRandom;
 use rand::SeedableRng;
-use rand_pcg;
 
 pub struct BadamSat<'a, T: rand::Rng> {
     playing_cards: Vec<(&'a str, i32)>,
@@ -45,8 +44,8 @@ impl BadamSat<'_, rand_pcg::Pcg64> {
             self.cards_dist = vec![qtn; self.players as usize]
         } else {
             let mut num_cards = vec![qtn; self.players as usize];
-            for i in 0..rem as usize {
-                num_cards[i] += 1;
+            for i in num_cards.iter_mut().take(rem as usize) {
+                *i += 1;
             }
             self.cards_dist = num_cards;
         }
@@ -78,7 +77,7 @@ impl Game for BadamSat<'_, rand_pcg::Pcg64> {
         }
         let idx2: usize = idx1 + self.cards_dist[(turn - 1) as usize] as usize;
         let mut my_cards = self.playing_cards[idx1..idx2].to_vec();
-        my_cards.sort();
+        my_cards.sort_unstable();
         my_cards.to_vec()
     }
 }

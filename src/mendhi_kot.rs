@@ -5,7 +5,6 @@ use crate::utils::*;
 use itertools::Itertools;
 use rand::seq::SliceRandom;
 use rand::SeedableRng;
-use rand_pcg;
 
 pub struct MendhiKot<'a, T: rand::Rng> {
     playing_cards: Vec<(&'a str, i32)>,
@@ -89,7 +88,7 @@ impl Game for MendhiKot<'_, rand_pcg::Pcg64> {
         let idx1: usize = ((turn - 1) * self.cards_each) as usize;
         let idx2: usize = idx1 + self.cards_each as usize;
         let mut my_cards = self.playing_cards[idx1..idx2].to_vec();
-        my_cards.sort();
+        my_cards.sort_unstable();
         my_cards.to_vec()
     }
 }
